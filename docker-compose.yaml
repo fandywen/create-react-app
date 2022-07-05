@@ -1,0 +1,22 @@
+version: "3"
+services:
+  route:
+    build:
+      context: .
+      dockerfile: router.Dockerfile
+    ports:
+      - 8000:80
+  simple:
+    build:
+      context: .
+      dockerfile: simple.Dockerfile
+    ports:
+      - 7000:80
+  traefik:
+    image: traefik:v2.5
+    command: --api.insecure=true --providers.docker
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
